@@ -1,0 +1,8 @@
+{
+  "appId": "com.sih.app",
+  "appName": "sih",
+  "webDir": "dist",
+  "server": {
+    "url": "http://localhost:5173"
+  }
+}

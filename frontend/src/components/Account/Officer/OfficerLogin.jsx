@@ -1,0 +1,115 @@
+import { Link } from 'react-router'
+import { useDispatch } from 'react-redux'
+import { useState } from 'react'
+import { useNavigate } from 'react-router'
+
+import Input from '../../Input'
+import { login } from '../../../store/authSlice'
+import auth from '../../../supabase/auth'
+
+function Login() {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const [btnText, setBtnText] = useState('Send OTP');
+
+    const [formData, setFormData] = useState({
+        role: 'officer',
+        name: 'annoymous',
+        otp: '',
+        phone: ''
+    });
+
+    const sendOtp = async () => {
+        setBtnText('Sending OTP...');
+        if (formData.phone.length !== 10) {
+            alert('Please enter a valid phone number');
+            return false;
+        }
+        if (formData.name.length < 3) {
+            alert('Please enter a valid name');
+            return false;
+        }
+        const { error } = await auth.sendOtp(formData.name, formData.phone);
+
+        if (error) {
+            console.log(error);
+            return false;
+        }
+
+        return true;
+    }
+
+    const handleSubmit = async () => {
+
+        if (btnText === 'Send OTP') {
+
+            const isValid = await sendOtp();
+            if (!isValid) return;
+
+            setBtnText('Verify OTP');
+            return;
+        }
+
+        const response = await auth.verifyOtp(formData, false);
+
+        if (response.status === 'error') {
+            console.log(response.msg);
+            return;
+        }
+
+        dispatch(login(response.session.user));
+        navigate('/');
+    }
+
+    const onChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    }
+
+    return (
+        <div className='flex justify-center'>
+            <div className="relative flex flex-col rounded-xl bg-transparent">
+                <h1 className="block text-4xl text-center font-semibold text-slate-900">
+                    Field Engineer Login
+                </h1>
+
+                <div className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
+                    <div className="mb-1 flex flex-col gap-6">
+                        <div className="w-full max-w-sm min-w-[200px]">
+                            <Input
+                                label="Phone Number"
+                                type="number"
+                                placeholder="945xxxxxxx"
+                                name="phone"
+                                onChange={(e) => onChange(e)}
+                                required
+                            />
+                        </div>
+                        {btnText === 'Verify OTP' &&
+                            <div className="w-full max-w-sm min-w-[200px]">
+                                <Input
+                                    label="OTP"
+                                    type="text"
+                                    placeholder="123456"
+                                    name="otp"
+                                    onChange={(e) => onChange(e)}
+                                    required
+                                />
+                            </div>}
+                    </div>
+
+                    <button onClick={() => handleSubmit()} className="mt-4 w-full rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
+                        {btnText}
+                    </button>
+                </div>
+                <p className="flex justify-center mt-6 text-sm text-slate-600">
+                    Don't have an account?
+                    <Link to="/officer/signup" className="ml-1 text-sm font-semibold text-slate-700 underline">
+                        Sign up
+                    </Link>
+                </p>
+            </div>
+        </div>
+    )
+}
+
+export default Login
