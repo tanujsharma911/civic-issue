@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Map, UserCheck, Check } from 'lucide-react';
+import { Map, UserCheck } from 'lucide-react';
+import { toast } from 'sonner';
 
 import reportService from '../../supabase/table';
 
@@ -50,7 +51,7 @@ function RecentComplaints({ reports, engineers = [], assign = false, city = '', 
         const response = await reportService.assignOfficerToReport(updatedEngineer.reportId, updatedEngineer.id, updatedEngineer.name, updatedEngineer.phone);
 
         if (response.status === 'error') {
-            alert("Error assigning officer: " + response.msg.message);
+            toast.error("Error assigning officer: " + response.msg.message);
             return;
         }
 
@@ -58,11 +59,12 @@ function RecentComplaints({ reports, engineers = [], assign = false, city = '', 
         const assignResponse = await reportService.assignOfficerToTable(updatedEngineer.id, updatedEngineer.reportId);
 
         if (assignResponse.status === 'error') {
-            alert("Error assigning officer to table: " + assignResponse.msg.message);
+            toast.error("Error assigning officer to table: " + assignResponse.msg.message);
             return;
         }
 
         setOpenModel(false);
+        toast.success('Field Engineer assigned successfully');
     }
 
     return (

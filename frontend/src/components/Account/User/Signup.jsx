@@ -1,6 +1,7 @@
 import { Link } from 'react-router'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
+import { toast } from 'sonner';
 
 import Input from '../../Input'
 import auth from '../../../supabase/auth'
@@ -21,21 +22,22 @@ function Signup() {
 
     const handleSubmit = async () => {
         if (formData.password.length < 6) {
-            alert("Password must be at least 6 characters long");
+            toast.error("Password must be at least 6 characters long");
             return;
         }
-        if (!formData.email || !formData.name) {
-            alert("Please fill all the fields");
+        if (!formData.email) {
+            toast.error("Please fill all the fields");
             return;
         }
 
-        const res = await auth.signUp(formData.name, formData.email, formData.password);
+        const res = await auth.signUp(formData.name || 'Anonymous', formData.email, formData.password);
 
         if (res.status === 'success') {
-            alert(res.msg);
+            toast.success(res.msg);
             navigate('/login');
         } else {
-            alert(res.msg);
+            toast.error(res.msg);
+            console.error(res.error);
         }
     }
 
@@ -50,7 +52,7 @@ function Signup() {
                     <div className="mb-1 flex flex-col gap-6">
                         <div className="w-full max-w-sm min-w-[200px]">
                             <Input
-                                label="Full Name *"
+                                label="Full Name"
                                 type="text"
                                 placeholder="Your Full Name"
                                 name="name"

@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux"
 import { Outlet, useLocation } from "react-router";
 import { useEffect, useState } from "react";
+import { Toaster } from 'sonner';
 
 import Header from "./components/Header/Header";
 import auth from "./supabase/auth";
@@ -37,6 +38,8 @@ function App() {
       <div className={`${outletName === 'dashboard' ? '' : 'my-30 px-5 md:px-10 lg:max-w-4xl mx-auto'}`}>
         <Outlet />
       </div>
+
+      <Toaster richColors />
     </div>
   )
 }

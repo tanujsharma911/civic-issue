@@ -1,11 +1,14 @@
-import { useNavigate, Link } from "react-router";
+import { useNavigate } from "react-router";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "sonner";
 
 import auth from "../supabase/auth"
 import { logout } from '../store/authSlice'
 import reportService from "../supabase/table"
 import { useEffect } from "react";
+
+// ChartJS.register(ArcElement, Tooltip, Legend);
 
 function Account() {
   const dispatch = useDispatch();
@@ -21,15 +24,22 @@ function Account() {
     const res = await auth.signOut();
 
     if (res.status === 'success') {
+      toast.success('Logged out successfully');
       dispatch(logout());
       navigate('/');
     }
   }
 
   useEffect(() => {
+    if (!user) return;
     const fetchReports = async () => {
       // getting all reports
       const res = await reportService.getAllReports();
+
+      if (res.status === 'error') {
+        console.log('Error fetching reports: ' + res.msg);
+        return;
+      }
 
       // filtering reports based on user role
 
@@ -54,10 +64,6 @@ function Account() {
         setInProgressReports(res.data.filter(report => report.status === 'In Progress' && report.assignedToId === officerId))
 
         setCompletedReports(res.data.filter(report => report.status === 'Completed' && report.assignedToId === officerId))
-      }
-
-      if (res.status === 'error') {
-        console.log('Error fetching reports: ' + res.msg);
       }
 
     };

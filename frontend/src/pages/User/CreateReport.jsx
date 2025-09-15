@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Sparkle, MapPin } from 'lucide-react';
 import { useNavigate } from 'react-router';
+import { toast } from 'sonner';
 
 import reportService from '../../supabase/table';
 import storageService from '../../supabase/storage';
@@ -112,23 +113,24 @@ function CreateReport() {
       const responseData = await response.json();
 
       if (responseData.report.ai_generated.verdict === "ai") {
-        alert("⚠️ The image is detected as AI-generated. Please upload a human-captured image.");
+        toast.error("The image is detected as AI-generated. Please upload a human-captured image.");
         setLoading(false);
         setReportingBtnText('Report Issue');
         return;
 
       } else if (responseData.report.ai_generated.verdict === "human") {
         setReportingBtnText('Uploading Image...');
+        toast.success("The image is verified as human-captured. Now checking image and description.");
 
       } else {
-        alert("⚠️ Unable to determine if the image is AI-generated.");
+        toast.error("Unable to determine if the image is AI-generated.");
         setLoading(false);
         setReportingBtnText('Report Issue');
         return;
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("Something went wrong. Check the console.");
+      toast.error("Something went wrong. Check the console.");
       setLoading(false);
       setReportingBtnText('Report Issue');
       return;
@@ -153,30 +155,36 @@ function CreateReport() {
       });
 
       const data = await response.json();
-      // console.log(data);
 
       if (data.success === false) {
-        alert('Error analyzing image: ' + data.message);
+        toast.error('Error analyzing image: ' + data.message);
+        console.log('Error analyzing image: ' + data.message);
         setLoading(false);
         setReportingBtnText('Report Issue');
         return;
       }
 
+      console.log('Analysis Result:', data);
       const updatedReportData = {
-        ...reportData, category: data.category
+        ...reportData, category: data.category || 'Other'
       };
       setReportData(updatedReportData);
 
     } catch (error) {
       console.error('Error:', error);
+      setLoading(false);
+      setReportingBtnText('Report Issue');
       return;
     }
 
     // upload file to supabase storage
-    const fileUrl = await storageService.uploadImage(file);
+    toast.success('Image looks good. Uploading the report...');
     setReportingBtnText('Uploading Image...');
+
+    const fileUrl = await storageService.uploadImage(file);
+
     if (fileUrl.status === 'error') {
-      alert('Error uploading image: ' + fileUrl.msg);
+      toast.error('Error uploading image: ' + fileUrl.msg);
       setLoading(false);
       return;
     }
@@ -190,11 +198,13 @@ function CreateReport() {
 
     // Handle response
     if (res.status === 'success') {
+      toast.success('Report submitted successfully!');
       navigate('/');
       setLoading(false);
     }
     else {
-      alert('Error submitting report: ' + res.msg);
+      toast.error('Error while submitting');
+      console.log(res.msg);
       setLoading(false);
     }
   };
@@ -208,7 +218,7 @@ function CreateReport() {
       }}>
         <div className="flex flex-col bg-white border border-gray-200 shadow-2xs rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
           <div className="p-4 md:p-5">
-            <div className='flex'>
+            <div className='flex w-full'>
               <div className='bg-blue-100 box-border size-12 mr-4 flex justify-center items-center rounded-lg'>
                 <Sparkle color='oklch(54.6% 0.245 262.881)' />
               </div>
@@ -216,7 +226,7 @@ function CreateReport() {
                 <h3 className="text-lg font-bold text-gray-800 dark:text-white">
                   Upload Image
                 </h3>
-                <p className=" text-gray-500 dark:text-neutral-400">
+                <p className="w-fit text-gray-500 dark:text-neutral-400">
                   Smart image detection. Click the button below to add image related to the issue.
                 </p>
               </div>

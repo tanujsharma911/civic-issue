@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { login } from '../../../store/authSlice'
 import { Link, useNavigate } from 'react-router'
+import { toast } from 'sonner'
 
 // local imports
 import Input from '../../Input'
@@ -26,7 +27,7 @@ function Login() {
 
         if (res.status === 'success') {
             dispatch(login(res.user));
-
+            toast.success('Logged in successfully!');
             navigate('/');
         } else {
             alert(res.msg);
