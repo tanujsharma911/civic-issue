@@ -23,7 +23,7 @@ function Header() {
       active: true
     },
     {
-      name: 'City Rankings',
+      name: 'State Rankings',
       to: '/rankings',
       active: true
     },
@@ -65,14 +65,14 @@ function Header() {
 
               {links.map((link) =>
                 link.active ? (
-                  <li key={link.name} className='ml-3 hover:bg-gray-50 hover:scale-105 px-3 py-2 rounded-2xl cursor-pointer transition-all' >
-                    <NavLink className={({ isActive }) => `font-medium ${isActive ? 'text-blue-500 ' : 'text-gray-900 dark:text-gray-400 '} transition-all duration-100 ease-in-out hover:scale-105 focus:outline-hidden focus:opacity-80`} to={link.to} aria-current="page">{link.name}</NavLink>
+                  <li key={link.name} className='ml-3' >
+                    <NavLink className={({ isActive }) => `hover:bg-gray-50 hover:scale-105 rounded-2xl cursor-pointer transition-all px-3 py-2 font-medium ${isActive ? 'text-blue-500 ' : 'text-gray-900 dark:text-gray-400 '} transition-all duration-100 ease-in-out hover:scale-105 focus:outline-hidden focus:opacity-80`} to={link.to} aria-current="page">{link.name}</NavLink>
                   </li>
                 ) : null)}
 
               {/* City Authority */}
-              {!authStatus && <li className='py-2'>
-                <button id="dropdownNavbarLink" onClick={() => setAuthorityDropdownOpen(authorityDropdownOpen === 'hidden' ? 'absolute' : 'hidden')} data-dropdown-toggle="dropdownNavbar" className="flex cursor-pointer items-center justify-between w-full py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">City Authority<svg className="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+              {!authStatus && <li className=''>
+                <button id="dropdownNavbarLink" onClick={() => setAuthorityDropdownOpen(authorityDropdownOpen === 'hidden' ? 'absolute' : 'hidden')} data-dropdown-toggle="dropdownNavbar" className="flex cursor-pointer items-center justify-between w-full py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">Municipal Authority<svg className="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                   <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
                 </svg></button>
                 <div id="dropdownNavbar" className={`z-10 ${authorityDropdownOpen} font-normal bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600`}>
@@ -88,8 +88,8 @@ function Header() {
               </li>}
 
               {/* Field Engineer */}
-              {!authStatus && <li className='py-2'>
-                <button id="dropdownNavbarLink" onClick={() => setOfficerDropdownOpen(officerDropdownOpen === 'hidden' ? 'absolute' : 'hidden')} data-dropdown-toggle="dropdownNavbar" className="flex cursor-pointer items-center justify-between w-full py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">Field Engineer<svg className="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+              {!authStatus && <li className=''>
+                <button id="dropdownNavbarLink" onClick={() => setOfficerDropdownOpen(officerDropdownOpen === 'hidden' ? 'absolute' : 'hidden')} data-dropdown-toggle="dropdownNavbar" className="flex cursor-pointer items-center justify-between w-full py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">Ward Member<svg className="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                   <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
                 </svg></button>
                 <div id="dropdownNavbar" className={`z-10 ${officerDropdownOpen} font-normal bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600`}>
@@ -106,8 +106,8 @@ function Header() {
 
               {/* User */}
               {!authStatus &&
-                <li className='py-2'>
-                  <button id="dropdownNavbarLink" onClick={() => setUserDropdownOpen(userDropdownOpen === 'hidden' ? 'absolute' : 'hidden')} data-dropdown-toggle="dropdownNavbar" className="flex cursor-pointer items-center justify-between w-full py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">User <svg className="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                <li className=''>
+                  <button id="dropdownNavbarLink" onClick={() => setUserDropdownOpen(userDropdownOpen === 'hidden' ? 'absolute' : 'hidden')} data-dropdown-toggle="dropdownNavbar" className="flex cursor-pointer items-center justify-between w-full py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">Citizen <svg className="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
                   </svg></button>
                   <div id="dropdownNavbar" className={`z-10 ${userDropdownOpen} font-normal bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600`}>

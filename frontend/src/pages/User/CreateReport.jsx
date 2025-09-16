@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Sparkle, MapPin } from 'lucide-react';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { toast } from 'sonner';
 
 import reportService from '../../supabase/table';
 import storageService from '../../supabase/storage';
+import Input from '../../components/Input';
 
 function CreateReport() {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ function CreateReport() {
   const [reportData, setReportData] = useState({
     image: '',
     description: '',
-    category: '',
+    lgd_ward_code: '',
     createdByName: user?.user_metadata?.display_name || '',
     createdById: user?.id || '',
     lat: 0,
@@ -250,6 +251,18 @@ function CreateReport() {
             placeholder="Example: Broken street light near the park."
             onChange={(e) => handleInputChange(e)}
           ></textarea>
+        </div>
+
+        <div className="w-full">
+          <Input
+            label="Nagar Nigam (Muncipal Corporation) ward no."
+            type="text"
+            placeholder="Enter Nagar Nigam ward no. of issue location"
+            required
+            onChange={(e) => handleInputChange(e)}
+            name="lgd_ward_code"
+          />
+          <p className='text-sm text-gray-500 mt-1'>find ward no. <a className='text-sky-700 underline' href="https://lgdirectory.gov.in/viewWard.do?%3Ccsrf:token%20uri=%22viewWard.do%22/%3E" target="_blank">here</a></p>
         </div>
 
         <p className='flex items-center text-gray-500'><MapPin size="18" className='mr-1' /> Using your current location</p>

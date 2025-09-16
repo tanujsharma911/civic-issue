@@ -1,14 +1,12 @@
 import { useNavigate } from "react-router";
 import { useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 
 import auth from "../supabase/auth"
 import { logout } from '../store/authSlice'
 import reportService from "../supabase/table"
-import { useEffect } from "react";
-
-// ChartJS.register(ArcElement, Tooltip, Legend);
 
 function Account() {
   const dispatch = useDispatch();
@@ -33,30 +31,28 @@ function Account() {
   useEffect(() => {
     if (!user) return;
     const fetchReports = async () => {
-      // getting all reports
-      const res = await reportService.getAllReports();
 
-      if (res.status === 'error') {
-        console.log('Error fetching reports: ' + res.msg);
-        return;
-      }
-
-      // filtering reports based on user role
-
+      // user created reports
       if (user.user_metadata.role === 'user') {
-        // user created reports
-        setReports(res.data.filter(report => report.createdById === user.id))
+        const res = await reportService.getReportsByUserIdName(user.id, user.user_metadata.display_name);
+        console.log(res.data, "user id", user.id, "user name", user.user_metadata.display_name);
+        setReports(res.data);
       }
+
+      // officer assigned reports
       else if (user.user_metadata.role === 'officer') {
-        // officer assigned reports
 
         // getting officer id from table officers
         const officerRes = await reportService.getOfficerByAuthId(user.id);
+
         if (officerRes.status === 'error') {
           console.log('Error fetching officer: ' + officerRes.msg);
           return;
         }
         const officerId = officerRes.data.id.toString();
+
+        // fetching reports assigned to officer
+        const res = await reportService.getReportsByAssignedTo(officerId);
 
         // filtering reports based on officer id
         setReports(res.data.filter(report => report.assignedToId === officerId))
@@ -72,7 +68,7 @@ function Account() {
 
   return (
     <div>
-      <div className="shrink-0 group flex flex-wrap gap-2 justify-between items-center border border-gray-200 rounded-lg p-4">
+      <div className="shrink-0 group flex flex-wrap gap-2 justify-between items-center border border-gray-200 rounded-2xl p-4">
         <div className="flex items-center">
           <span className="inline-block size-15.5 bg-gray-100 rounded-full overflow-hidden">
             <svg className="size-full text-gray-300" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -83,7 +79,11 @@ function Account() {
           </span>
 
           <div className="ms-3">
-            <h3 className="font-semibold text-gray-800 dark:text-white">{user?.user_metadata?.display_name || user?.user_metadata?.city + ', ' + user?.user_metadata?.state || 'Unknown'} <span className="text-sm my-auto ml-1 font-light bg-gray-200 py-1 px-2 rounded-full">{user?.user_metadata?.role}</span></h3>
+            <h3 className="font-semibold text-gray-800 dark:text-white">
+              {user?.user_metadata?.display_name || user?.user_metadata?.city + ', ' + user?.user_metadata?.state || 'Unknown'}
+              <span className="text-sm my-auto ml-1 font-light bg-gray-200 py-1 px-2 rounded-full">{user?.user_metadata?.role === 'user' ? 'Citizen' : user?.user_metadata?.role === 'officer' ? 'Ward Member' : 'Municipal Officer'}</span>
+              {user?.user_metadata?.role === 'officer' && <span className="text-sm my-auto ml-1 font-light bg-gray-200 py-1 px-2 rounded-full">Ward No. {user?.user_metadata?.lgd_ward_code}</span>}
+            </h3>
             <p className="text-sm font-medium text-gray-400 dark:text-neutral-500">{user?.user_metadata?.email}</p>
             <p className="text-sm font-medium text-gray-400 dark:text-neutral-500">{user?.phone && '+' + user?.phone}</p>
           </div>
@@ -94,6 +94,60 @@ function Account() {
           </button>
         </div>
       </div>
+
+      {user?.user_metadata?.role === 'user' && <div className='p-4 mt-5 border border-gray-200 dark:border-gray-700 rounded-2xl' >
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-foreground">Reports Insights</h3>
+        </div>
+
+        <div className="grid grid-cols-5 gap-4">
+          <div className="text-center">
+            <div className="text-2xl">{reports?.length}</div>
+            <div className="text-sm text-muted-foreground">Total Complaints</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl text-green-600">{reports?.filter(report => report.status === 'Completed').length}</div>
+            <div className="text-sm text-muted-foreground">Resolved</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl text-yellow-500">{reports?.filter(report => report.status === 'In Progress').length}</div>
+            <div className="text-sm text-muted-foreground">In Progress</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl text-red-600">{reports?.filter(report => report.status === 'Pending').length}</div>
+            <div className="text-sm text-muted-foreground">Pending</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl text-foreground">{reports?.filter(report => report.status === 'Completed').length + reports?.filter(report => report.status === 'In Progress').length + reports?.filter(report => report.status === 'Pending').length > 0 ? Math.round((reports?.filter(report => report.status === 'Completed').length / (reports?.filter(report => report.status === 'Completed').length + reports?.filter(report => report.status === 'In Progress').length + reports?.filter(report => report.status === 'Pending').length)) * 100) : 0}%</div>
+            <div className="text-sm text-muted-foreground">Resolved Rate</div>
+          </div>
+        </div>
+      </div>}
+
+      {user?.user_metadata?.role === 'officer' && <div className='p-4 mt-5 border border-gray-200 dark:border-gray-700 rounded-2xl' >
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-foreground">Reports Insights</h3>
+        </div>
+
+        <div className="grid grid-cols-4 gap-4">
+          <div className="text-center">
+            <div className="text-2xl">{reports?.length}</div>
+            <div className="text-sm text-muted-foreground">Total Assigned Complaints</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl text-green-600">{reports?.filter(report => report.status === 'Completed').length}</div>
+            <div className="text-sm text-muted-foreground">Resolved</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl text-yellow-500">{reports?.filter(report => report.status === 'In Progress').length}</div>
+            <div className="text-sm text-muted-foreground">In Progress</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl text-foreground">{reports?.filter(report => report.status === 'Completed').length + reports?.filter(report => report.status === 'In Progress').length > 0 ? Math.round((reports?.filter(report => report.status === 'Completed').length / (reports?.filter(report => report.status === 'Completed').length + reports?.filter(report => report.status === 'In Progress').length)) * 100) : 0}%</div>
+            <div className="text-sm text-muted-foreground">Resolved Rate</div>
+          </div>
+        </div>
+      </div>}
 
       {/* Your Reports */}
       {user?.user_metadata?.role === 'user' && <h1 className="mt-10 mb-4 text-3xl dark:text-white">Your Reports</h1>}

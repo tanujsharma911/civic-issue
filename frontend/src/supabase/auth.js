@@ -4,12 +4,13 @@ import { supabase } from '../supabase/supabase-client';
 
 export class AuthService {
     //  abhay 9549370398
-    async sendOtp(name, phoneNumber) {
+    async sendOtp(name, phoneNumber, code) {
         const { data, error } = await supabase.auth.signInWithOtp({
             phone: `+91${phoneNumber}`,
             options: {
                 data: {
                     display_name: name,
+                    lgd_ward_code: code,
                     role: "officer"
                 }
             }
@@ -59,6 +60,7 @@ export class AuthService {
                 phone: formData.phone,
                 state: formData.state,
                 city: formData.city,
+                lgd_ward_code: formData.lgd_ward_code,
                 auth_id: auth_id
             });
 

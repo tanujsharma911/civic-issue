@@ -16,6 +16,7 @@ function Signup() {
         role: 'officer',
         name: 'annoymous',
         state: '',
+        lgd_ward_code: '',
         workDoneStatus: 'Not Assigned',
         city: '',
         otp: '',
@@ -23,7 +24,7 @@ function Signup() {
     });
 
     const sendOtp = async () => {
-        const { error } = await auth.sendOtp(formData.name, formData.phone, true);
+        const { error } = await auth.sendOtp(formData.name, formData.phone, formData.lgd_ward_code);
 
         if (error) {
             console.log(error);
@@ -79,7 +80,7 @@ function Signup() {
         <div className='flex justify-center'>
             <div className="relative flex flex-col rounded-xl bg-transparent">
                 <h1 className="block text-4xl text-center font-semibold text-slate-900">
-                    Field Engineer Sign Up
+                    Ward Member Sign Up
                 </h1>
 
                 <div className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
@@ -110,6 +111,16 @@ function Signup() {
                                 type="text"
                                 placeholder="Example: Rajasthan"
                                 name="state"
+                                onChange={(e) => onChange(e)}
+                                required
+                            />
+                        </div>
+                        <div className="w-full max-w-sm min-w-[200px]">
+                            <Input
+                                label="Your Ward Number"
+                                type="text"
+                                placeholder="Example: 12"
+                                name="lgd_ward_code"
                                 onChange={(e) => onChange(e)}
                                 required
                             />

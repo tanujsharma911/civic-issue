@@ -69,7 +69,7 @@ function Login() {
         <div className='flex justify-center'>
             <div className="relative flex flex-col rounded-xl bg-transparent">
                 <h1 className="block text-4xl text-center font-semibold text-slate-900">
-                    Field Engineer Login
+                    Ward Member Login
                 </h1>
 
                 <div className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">

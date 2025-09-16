@@ -44,10 +44,15 @@ function Dashboard() {
             icon: <ClipboardClock />
         },
         {
-            name: "All Field Engineers",
+            name: "All Ward Members",
             icon: <UserCog />
         }
     ]
+
+    function capitalizeFirst(str) {
+        if (!str) return ""; // handle empty string
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
 
     useEffect(() => {
         if (city.length < 3) {
@@ -64,7 +69,7 @@ function Dashboard() {
         }
 
         const fetchReports = async () => {
-            const res = await reportService.getAllReports();
+            const res = await reportService.getReportsByStateCity(capitalizeFirst(slug), capitalizeFirst(city));
 
             if (res.status === 'success') {
                 setReports(res.data);
@@ -100,7 +105,7 @@ function Dashboard() {
                 {active === 'dashboard' && <DashboardOverview reports={reports} city={city} state={slug} />}
                 {active === 'allcomplaints' && <AllComplains reports={reports} city={city} state={slug} />}
                 {active === 'pending' && <PendingComplains reports={reports} city={city} state={slug} />}
-                {active === 'allfieldengineers' && <AllOfficers city={city} state={slug} />}
+                {active === 'allwardmembers' && <AllOfficers city={city} state={slug} />}
             </div>
 
         </div>

@@ -30,7 +30,7 @@ function Login() {
             toast.success('Logged in successfully!');
             navigate('/');
         } else {
-            alert(res.msg);
+            toast.error(res.msg);
         }
     }
 

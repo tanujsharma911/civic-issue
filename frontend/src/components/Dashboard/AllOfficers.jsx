@@ -47,8 +47,8 @@ function AllOfficers({ city = '', state = '' }) {
 
     return (
         <div className="p-4 min-h-screen border-l-2 border-gray-200 dark:border-gray-700">
-            <h1 className="text-4xl dark:text-white">Field Engineers List</h1>
-            <p className='mt-2 text-gray-600'>Monitor and manage field engineers</p>
+            <h1 className="text-4xl dark:text-white">Ward Members List</h1>
+            <p className='mt-2 text-gray-600'>Monitor and manage ward members</p>
 
             <div className=" border-2 border-gray-200 dark:border-gray-700 rounded-2xl p-4 mt-10 flex flex-col lg:w-full">
                 <div className="overflow-scroll ">

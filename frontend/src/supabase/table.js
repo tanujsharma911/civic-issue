@@ -56,6 +56,62 @@ export class ReportService {
         }
     }
 
+    async getReportsByState(state) {
+        const { data, error } = await supabase
+            .from('reports')
+            .select('*')
+            .eq('state', state)
+            .order('created_at', { ascending: false });
+
+        if (error) {
+            return ({ status: 'error', msg: error });
+        } else {
+            return ({ status: 'success', data: data });
+        }
+    }
+
+    async getReportsByStateCity(state, city) {
+        const { data, error } = await supabase
+            .from('reports')
+            .select('*')
+            .eq('state', state)
+            .eq('city', city)
+            .order('created_at', { ascending: false });
+
+        if (error) {
+            return ({ status: 'error', msg: error });
+        } else {
+            return ({ status: 'success', data: data });
+        }
+    }
+
+    async getReportsByUserIdName(userId, name) {
+        const { data, error } = await supabase
+            .from('reports')
+            .select('*')
+            .eq('createdById', userId)
+            .eq('createdByName', name);
+
+        if (error) {
+            return ({ status: 'error', msg: error });
+        } else {
+            return ({ status: 'success', data: data });
+        }
+    }
+
+    async getReportsByAssignedTo(officerId) {
+        const { data, error } = await supabase
+            .from('reports')
+            .select('*')
+            .eq('assignedToId', officerId);
+
+        if (error) {
+            return ({ status: 'error', msg: error });
+        } else {
+            return ({ status: 'success', data: data });
+        }
+    }
+
     async deleteReport(reportId) {
         const { error } = await supabase
             .from('reports')
@@ -141,7 +197,7 @@ export class ReportService {
 
     async userFeedback(reportId, feedbackData) {
 
-        if(feedbackData === 'sad'){
+        if (feedbackData === 'sad') {
             // set report Pending again
             const { data, error } = await supabase
                 .from('reports')

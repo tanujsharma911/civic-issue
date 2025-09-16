@@ -42,7 +42,7 @@ def check_civic_issue(description, image_data):
     """
     municipal_categories = {
         'roads_infrastructure': {
-            'keywords': ['pothole', 'broken road', 'cracked pavement', 'road damage', 'asphalt', 
+            'keywords': ['pothole', 'potholes', 'broken road', 'cracked pavement', 'road damage', 'asphalt', 
                         'street surface', 'road repair', 'uneven road', 'road construction'],
             'department': 'Public Works Department'
         },

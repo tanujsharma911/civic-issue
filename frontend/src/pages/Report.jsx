@@ -1,6 +1,6 @@
 import { useNavigate, useParams, Link } from "react-router";
 import { useEffect, useState } from "react";
-import { User, Calendar, MapPin, Map, Phone, BadgeAlert, Clock } from 'lucide-react';
+import { User, Calendar, MapPin, Map, Phone, BadgeAlert, Clock, Hash } from 'lucide-react';
 import { useSelector } from "react-redux";
 
 import reportService from "../supabase/table"
@@ -62,7 +62,6 @@ function Report() {
     };
 
     const handleWorkDone = async () => {
-        console.log('user id: ', user.id)
         setWorkDoneBtnText('Uploading...');
         setWorkDoneLoading(true);
 
@@ -173,7 +172,7 @@ function Report() {
         <div>
             <div className="flex gap-4 mb-4 items-center">
                 <h1 className="text-4xl dark:text-white">Report</h1>
-                <span className="text-base bg-gray-100 py-1 px-2 rounded-full border border-gray-200"># {data?.id}</span>
+                <span className="text-base bg-gray-100 py-1 px-2 rounded-full border border-gray-200"># ID:{data?.id}</span>
                 <span className="h-fit">
                     {data?.status === 'Pending' && <div className="inline-flex bg-red-100 py-1 px-3 rounded-full items-center">
                         <span className="size-2 inline-block bg-red-500 rounded-full me-2"></span>
@@ -190,12 +189,17 @@ function Report() {
 
                 </span>
             </div>
-            <div className="sm:block md:flex lg:flex flex-wrap justify-between items-center mb-4 text-gray-500 dark:text-neutral-400">
-                <p className="flex items-center"><User size={18} className="mr-1" /> {data?.createdByName}</p>
-                <p className="flex items-center"><MapPin size={18} className="mr-1" /> {data?.city}, {data?.state}</p>
-                <button onClick={() => handleMap()} className="flex items-center cursor-pointer"><Map size={18} className="mr-1" /> Open in Map</button>
-                <p className="flex items-center"><Calendar size={18} className="mr-1" /> {new Date(data?.created_at).toLocaleDateString()}</p>
-                <p className="flex items-center"><Clock size={18} className="mr-1" /> {new Date(data?.created_at).toLocaleTimeString()}</p>
+            <div className="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 mb-4 text-gray-500 dark:text-neutral-400">
+                <div>
+                    <p className="flex items-center mt-2"><Hash size={18} className="mr-1 " /> Ward No. {data?.lgd_ward_code}</p>
+                    <p className="flex items-center mt-2"><User size={18} className="mr-1 " /> {data?.createdByName}</p>
+                    <p className="flex items-center mt-2"><MapPin size={18} className="mr-1" /> {data?.city}, {data?.state}</p>
+                </div>
+                <div>
+                    <button onClick={() => handleMap()} className="mt-2 flex items-center cursor-pointer"><Map size={18} className="mr-1" /> Open in Map</button>
+                    <p className="mt-2 flex items-center"><Calendar size={18} className="mr-1" /> {new Date(data?.created_at).toLocaleDateString()}</p>
+                    <p className="mt-2 flex items-center"><Clock size={18} className="mr-1" /> {new Date(data?.created_at).toLocaleTimeString()}</p>
+                </div>
             </div>
             <div className="bg-white border border-gray-200 rounded-2xl p-4 md:p-6 lg:p-8 dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
                 <img src={data?.image} className="w-full h-full mx-auto md:w-60 lg:w-80 object-contain rounded-lg max-w-screen-md max-h-screen" alt="description" />

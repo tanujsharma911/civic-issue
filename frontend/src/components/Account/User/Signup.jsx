@@ -8,6 +8,7 @@ import auth from '../../../supabase/auth'
 
 function Signup() {
     const navigate = useNavigate();
+    const [btnText, setBtnText] = useState('Sign Up');
 
     const [formData, setFormData] = useState({
         role: 'user',
@@ -30,6 +31,8 @@ function Signup() {
             return;
         }
 
+        setBtnText('Signing Up...');
+
         const res = await auth.signUp(formData.name || 'Anonymous', formData.email, formData.password);
 
         if (res.status === 'success') {
@@ -39,6 +42,8 @@ function Signup() {
             toast.error(res.msg);
             console.error(res.error);
         }
+
+        setBtnText('Sign Up');
     }
 
     return (
@@ -83,8 +88,8 @@ function Signup() {
                         </div>
                     </div>
 
-                    <button onClick={() => handleSubmit()} className="mt-4 w-full rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
-                        Sign Up
+                    <button onClick={() => handleSubmit()} disabled={btnText === 'Signing Up...'} className={`${btnText === 'Signing Up...' ? 'opacity-50 cursor-not-allowed' : ''} mt-4 w-full rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none`}>
+                        {btnText}
                     </button>
                 </div>
                 <p className="flex justify-center mt-6 text-sm text-slate-600">

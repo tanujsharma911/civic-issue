@@ -130,6 +130,7 @@ function RecentComplaints({ reports, engineers = [], assign = false, city = '', 
                                             <th scope="col" className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">ID</th>
                                             <th scope="col" className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Description</th>
                                             <th scope="col" className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">City, State</th>
+                                            <th scope="col" className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Ward Number</th>
                                             <th scope="col" className="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Status</th>
                                             <th scope="col" className="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Assignee</th>
                                             <th scope="col" className="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Complain Date</th>
@@ -145,6 +146,7 @@ function RecentComplaints({ reports, engineers = [], assign = false, city = '', 
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">{report.id}</td>
                                                 <td className="px-6 py-4 max-w-60 overflow-scroll whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{report.description}</td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{report.city}, {report.state}</td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{report.lgd_ward_code}</td>
                                                 <td className={`px-6 py-4 whitespace-nowrap text-end text-sm font-medium ${report.status === 'Pending' ? 'text-red-700' : report.status === 'In Progress' ? 'text-yellow-700' : 'text-green-700'}`}><span className={`px-2 py-1 rounded-full ${report.status === 'Pending' ? 'bg-red-50' : report.status === 'In Progress' ? 'bg-yellow-50' : 'bg-green-50'}`}>{report.status}</span></td>
                                                 {report.assignedToName && <td className="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">{report.assignedToName}</td>}
                                                 {(!report.assignedToName && assign) && <td className="flex justify-end py-4 whitespace-nowrap text-end text-sm font-medium"><button onClick={() => handleOpenModal(report.id)} className='bg-sky-100 flex items-center gap-2 rounded-xl hover:bg-sky-200 cursor-pointer py-2 px-3 text-sky-700'><UserCheck size={14} />Assign</button></td>}
@@ -186,12 +188,12 @@ function RecentComplaints({ reports, engineers = [], assign = false, city = '', 
                         <div className="flex flex-col bg-white border border-gray-200 shadow-2xs rounded-xl pointer-events-auto dark:bg-neutral-800 dark:border-neutral-700 dark:shadow-neutral-700/70">
                             <div className="flex justify-between items-center py-3 px-4 border-b border-gray-200 dark:border-neutral-700">
                                 <h3 id="hs-basic-modal-label" className="font-bold text-gray-800 dark:text-white">
-                                    Assign Field Engineer
+                                    Assign Ward Member
                                 </h3>
                             </div>
                             <div className="p-4">
                                 <p className="mt-1 text-gray-800 dark:text-neutral-400">
-                                    Select the field engineer you want to assign this complaint to.
+                                    Select the ward member you want to assign this complaint to.
                                 </p>
                                 <select
                                     value={selectedEngineer.id || ''}
@@ -199,7 +201,7 @@ function RecentComplaints({ reports, engineers = [], assign = false, city = '', 
                                     className="mt-4 py-3 px-2 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                 >
                                     {availableEngineers.map((engineer) => (
-                                        <option key={engineer.id} value={engineer.id} name={engineer.phone}>{engineer.name}</option>
+                                        <option key={engineer.id} value={engineer.id} name={engineer.phone}>{engineer.name} (Ward No. {engineer.lgd_ward_code})</option>
                                     ))}
                                 </select>
                             </div>

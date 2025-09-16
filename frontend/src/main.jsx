@@ -10,10 +10,15 @@ import App from './App.jsx'
 
 // Local imports ------------------------
 import Home from './pages/Home.jsx'
-import Rankings from './pages/CityRanking.jsx'
+import Rankings from './pages/Ranking/StateRanking.jsx'
+import CityRanking from './pages/Ranking/CityRanking.jsx'
+import WardRanking from './pages/Ranking/WardRanking.jsx'
 import Account from './pages/Account.jsx'
 import AuthLayout from './components/AuthLayout.jsx'
 import Report from './pages/Report.jsx'
+import Reports from './pages/Reports/Reports.jsx'
+import CityReports from './pages/Reports/CityReports.jsx'
+import WardReports from './pages/Reports/WardReports.jsx'
 
 // User Imports
 import Login from './pages/User/Login.jsx'
@@ -48,6 +53,22 @@ const router = createBrowserRouter([
         element: (
           <AuthLayout authenticationRequired={false}>
             <Rankings />
+          </AuthLayout>
+        )
+      },
+      {
+        path: "/rankings/:state",
+        element: (
+          <AuthLayout authenticationRequired={false}>
+            <CityRanking />
+          </AuthLayout>
+        )
+      },
+      {
+        path: "/rankings/:state/:city",
+        element: (
+          <AuthLayout authenticationRequired={false}>
+            <WardRanking />
           </AuthLayout>
         )
       },
@@ -134,7 +155,19 @@ const router = createBrowserRouter([
       {
         path: "/report/:slug",
         element: <Report />,
-      }
+      },
+      {
+        path: "/reports/:slug/",
+        element: <Reports />,
+      },
+      {
+        path: "/reports/:slug/:city",
+        element: <CityReports />,
+      },
+      {
+        path: "/reports/:slug/:city/:ward",
+        element: <WardReports />,
+      },
     ]
   }
 ]);
