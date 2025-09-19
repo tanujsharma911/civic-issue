@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Sparkle, MapPin } from 'lucide-react';
+import { Sparkle, MapPin, Info } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
 import { toast } from 'sonner';
+import { Tooltip } from 'react-tooltip'
 
 import reportService from '../../supabase/table';
 import storageService from '../../supabase/storage';
@@ -255,17 +256,25 @@ function CreateReport() {
 
         <div className="w-full">
           <Input
-            label="Nagar Nigam (Muncipal Corporation) ward no."
+            label="Ward No./LGD code of issue location"
             type="text"
-            placeholder="Enter Nagar Nigam ward no. of issue location"
+            placeholder="Example: 106476"
             required
             onChange={(e) => handleInputChange(e)}
             name="lgd_ward_code"
           />
-          <p className='text-sm text-gray-500 mt-1'>find ward no. <a className='text-sky-700 underline' href="https://lgdirectory.gov.in/viewWard.do?%3Ccsrf:token%20uri=%22viewWard.do%22/%3E" target="_blank">here</a></p>
+          <p className='flex items-center text-sm text-gray-500 mt-2'>
+            <a data-tooltip-id="my-tooltip" data-tooltip-content="LGD Ward Code comes from the Local Government Directory (LGD) maintained by the Ministry of Panchayati Raj, Government of India. Municipalities sometimes publish ward maps with LGD codes on their websites." className='w-fit mr-2'><Info size={20} /></a>
+            Every sub district has a unique LGD code. Find the LGD code
+            <a className='text-sky-700 underline ml-1' href="https://lgdirectory.gov.in/" target="_blank"> here</a>.
+          </p>
+
+
+          <Tooltip id="my-tooltip" style={{ width: '300px' }} />
+
         </div>
 
-        <p className='flex items-center text-gray-500'><MapPin size="18" className='mr-1' /> Using your current location</p>
+        <p className='flex items-center text-gray-500 mt-3'><MapPin size="18" className='mr-1' /> Using your current location</p>
 
         <button disabled={loading} type="submit" className={`w-full py-3 px-4 ${loading ? 'bg-gray-600 cursor-not-allowed' : ' hover:bg-blue-700 cursor-pointer'} inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white`}>
           {reportingBtnText}
