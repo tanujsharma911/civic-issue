@@ -157,7 +157,7 @@ const router = createBrowserRouter([
         element: <Report />,
       },
       {
-        path: "/reports/:slug/",
+        path: "/reports/:slug",
         element: <Reports />,
       },
       {

@@ -6,16 +6,8 @@ import reportService from "../supabase/table"
 import ReportCard from '../components/ui/ReportCard';
 
 function Home() {
-  // const user = useSelector((state) => state.auth.user);
   const [reports, setReports] = useState([]);
   const [allState, setAllState] = useState([]);
-
-  // const fetchAllStateAndCity = async () => {
-  //   const res = await fetch('https://gist.githubusercontent.com/anubhavshrimal/4aeb195a743d0cdd1c3806c9c222ed45/raw/181a34db4fcb8b37533b7c8b9c489b6c01573158/Indian_Cities_In_States_JSON')
-  //   const data = await res.json();
-  //   console.log(data);
-  // }
-  // fetchAllStateAndCity()
 
 
   useEffect(() => {

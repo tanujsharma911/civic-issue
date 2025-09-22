@@ -5,24 +5,18 @@ import { CalendarFold, Clock, MapPin } from 'lucide-react';
 import reportService from "../../supabase/table"
 
 function CityReports() {
-    const { slug, city } = useParams();
+    const { city } = useParams();
     const [allWardNumbers, setAllWardNumbers] = useState([]);
     const [cityReports, setCityReports] = useState([])
 
     useEffect(() => {
         const extractUniqueWard = (data) => {
-            // A Set automatically stores only unique values.
-            // We map over the data to get an array of all cities,
-            // and the Set constructor handles the rest.
             const wardSet = new Set(data.map(complaint => complaint.lgd_ward_code));
-
-            // Convert the Set back into an array before returning.
             return Array.from(wardSet);
         };
 
-        reportService.getReportsByState(slug).then((res) => {
+        reportService.getAllReports().then((res) => {
             if (res.status === 'success') {
-                // setAllCityReports(res.data);
                 const cityFilterdReports = res.data.filter(report => report.city === city);
                 setCityReports(cityFilterdReports);
 
@@ -49,7 +43,7 @@ function CityReports() {
             </ul>
 
 
-            <h1 className="text-4xl mb-4 dark:text-white">All {city}, {slug} Reports</h1>
+            <h1 className="text-4xl mb-4 dark:text-white">All {city} Reports</h1>
             <ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
 
                 {cityReports.map(report => (

@@ -45,12 +45,12 @@ function Header() {
   ];
 
   return (
-    <header className="flex flex-wrap border-b border-gray-200 sm:justify-start sm:flex-nowrap w-full bg-white text-sm py-3">
+    <header className="sticky top-0 left-0 flex flex-wrap border-b border-gray-200 sm:justify-start sm:flex-nowrap w-full bg-white text-sm py-3">
       <nav className="bg-white w-full border-gray-200 dark:bg-gray-900 dark:border-gray-700">
         <div className="max-w-screen-xl px-10 flex flex-wrap items-center justify-between mx-auto p-4">
           <span className="flex items-center space-x-3 rtl:space-x-reverse">
-            <img src="logo.webp" alt="" width={40} height={40} />
-            <NavLink className="flex-none font-semibold text-xl text-black focus:outline-hidden focus:opacity-80 " to="/" aria-label="Brand">Government of Jharkhand</NavLink>
+            <img src="https://imgs.search.brave.com/OE0VagxJQ1mItW9MdNYLSExDhLDE6oRY3CyTEsJ_tf8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/bmljZXBuZy5jb20v/cG5nL2Z1bGwvMjQ4/LTI0ODQ1NjVfc3dh/Y2hoLWJoYXJhdC1t/aXNzaW9uLXVyYmFu/LXN3YWNoaC1iaGFy/YXQtYWJoaXlhbi1s/b2dvLnBuZw" alt="" width={110} height={110} />
+            <NavLink className="flex-none font-semibold text-2xl text-black focus:outline-hidden focus:opacity-80 " to="/" aria-label="Brand">SIH 2025</NavLink>
           </span>
 
           <button data-collapse-toggle="navbar-dropdown" onClick={() => setNavbarOpen(!navbarOpen)} type="button" className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-dropdown" aria-expanded="false">

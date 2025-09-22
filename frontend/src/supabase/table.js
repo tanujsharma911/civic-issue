@@ -42,20 +42,6 @@ export class ReportService {
         }
     }
 
-    async getReportById(reportId) {
-        const { data, error } = await supabase
-            .from('reports')
-            .select('*')
-            .eq('id', reportId)
-            .single();
-
-        if (error) {
-            return ({ status: 'error', msg: error });
-        } else {
-            return ({ status: 'success', data: data });
-        }
-    }
-
     async getReportsByState(state) {
         const { data, error } = await supabase
             .from('reports')
@@ -77,6 +63,20 @@ export class ReportService {
             .eq('state', state)
             .eq('city', city)
             .order('created_at', { ascending: false });
+
+        if (error) {
+            return ({ status: 'error', msg: error });
+        } else {
+            return ({ status: 'success', data: data });
+        }
+    }
+
+    async getReportById(reportId) {
+        const { data, error } = await supabase
+            .from('reports')
+            .select('*')
+            .eq('id', reportId)
+            .single();
 
         if (error) {
             return ({ status: 'error', msg: error });

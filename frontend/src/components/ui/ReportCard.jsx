@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { Link } from "react-router";
 import { CalendarFold, Clock, MapPin } from 'lucide-react';
 
