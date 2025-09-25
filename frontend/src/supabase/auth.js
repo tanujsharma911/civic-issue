@@ -128,6 +128,7 @@ export class AuthService {
             return ({ status: 'success', user: userData.data.session.user, msg: 'Sign in successful!' });
         }
     }
+    
 
     async getSession() {
         const session = await supabase.auth.getSession();

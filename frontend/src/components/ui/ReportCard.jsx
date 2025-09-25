@@ -4,7 +4,7 @@ import { CalendarFold, Clock, MapPin } from 'lucide-react';
 
 function ReportCard({ report, key }) {
     return (
-        <li key={key} className='h-full hover:scale-[1.02] overflow-clip transition-all duration-200'>
+        <li key={key} className='h-full overflow-clip transition-all duration-200'>
             <div className="flex flex-col h-full bg-white border border-gray-200 hover:border-gray-400 shadow-2xs rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
                 <div className="aspect-[4/3] w-full h-full bg-gray-200 rounded-t-lg overflow-hidden">
                     <img src={report.image} className="aspect-[4/3] w-full h-full object-cover" alt="Description" />
@@ -22,7 +22,7 @@ function ReportCard({ report, key }) {
                             View
                         </Link>
 
-                        <div className="mt-4 scale-75">
+                        <div className="mt-4 scale-75 z-0">
                             {report?.status === 'Pending' && <div className="inline-flex bg-red-100 py-1 px-3 rounded-full items-center">
                                 <span className="size-2 inline-block bg-red-500 rounded-full me-2"></span>
                                 <span className="text-gray-600 dark:text-neutral-400">Pending</span>
