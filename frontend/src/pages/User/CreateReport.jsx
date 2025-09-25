@@ -140,7 +140,13 @@ function CreateReport() {
 
     // Check Image is spam or not
     setReportingBtnText('Checking Image...');
-    const SERVER_URL = 'http://localhost:8000';
+
+    // For local development
+    // const SERVER_URL = 'http://localhost:8000';
+
+    // For production
+    const SERVER_URL = import.meta.env.VITE_API_URL;
+    
     try {
       const imageBase64 = await convertImageToBase64(file);
       const description = reportData.description;
